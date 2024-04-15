@@ -25,6 +25,7 @@ const DNSRecordForm = ({ onSubmit }) => {
         },
         body: JSON.stringify({ domain, type, value }), 
       });
+      window.location.reload(); 
 
       // Check if request was successful
       if (response.ok) {
@@ -33,7 +34,8 @@ const DNSRecordForm = ({ onSubmit }) => {
         setDomain('');
         setType('');
         setValue('');
-        setError(''); 
+        setError('');
+        
       } else {
         const errorData = await response.json(); 
         setError(`Error: ${errorData.error}`); 

@@ -1,18 +1,16 @@
-// Dashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Upload from './Upload';
 import DNSRecordTable from './DNSRecordTable';
+import DNSRecordForm from './DNSRecordForm';
 import './Dashboard.css'; 
 
 const Dashboard = () => {
   const [dnsRecords, setDNSRecords] = useState([]);
+  const [key, setKey] = useState(Date.now());
 
-  const handleAddRecord = (newRecord) => {
-    setDNSRecords([...dnsRecords, newRecord]);
-  };
-
-  const handleDeleteRecord = (recordId) => {
-    setDNSRecords(dnsRecords.filter(record => record.id !== recordId));
+  const handleAddRecord = () => {
+    // Force reload of DNSRecordTable component by updating key
+    setKey(Date.now()); // Update the key with a new value to force re-render
   };
 
   return (
@@ -21,7 +19,8 @@ const Dashboard = () => {
       <div className="upload-container">
         <Upload onUpload={handleAddRecord} />
       </div>
-      <DNSRecordTable dnsRecords={dnsRecords} onDelete={handleDeleteRecord} />
+      <DNSRecordTable key={key} /> {/* Pass key prop to trigger re-render */}
+      <DNSRecordForm onAddRecord={handleAddRecord} />
     </div>
   );
 };
