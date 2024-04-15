@@ -18,7 +18,7 @@ const DNSRecordForm = ({ onSubmit }) => {
 
     try {
       
-      const response = await fetch('http://localhost:3000/api/dns/create', {
+      const response = await fetch('https://dns-backend.vercel.app/api/dns/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
