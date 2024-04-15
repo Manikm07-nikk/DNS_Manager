@@ -13,7 +13,7 @@ const DNSRecordTable = () => {
 
   const fetchDNSRecords = async () => {
     try {
-      const response = await fetch('https://dns-backend.vercel.app/api/dns');
+      const response = await fetch('http://localhost:3000/api/dns');
       if (response.ok) {
         const data = await response.json();
         setDNSRecords(data);
@@ -27,7 +27,7 @@ const DNSRecordTable = () => {
 
   const handleDeleteRecord = async (domain, type, value) => {
     try {
-        const response = await fetch(`https://dns-backend.vercel.app/api/dns/delete/${domain}?type=${type}&values=${value}`, {
+        const response = await fetch(`http://localhost:3000/api/dns/delete/${domain}?type=${type}&values=${value}`, {
             method: 'DELETE',
         });
 
