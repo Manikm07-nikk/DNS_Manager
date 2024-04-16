@@ -1,32 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './DNSRecordTable.css'; 
-import { useState, useEffect } from 'react';
-
 
 const DNSRecordTable = () => {
 
   const [dnsRecords, setDNSRecords] = useState([]);
-  const handleDeleteRecord = async (domain, type, value) => {
-    try {
-        const response = await fetch(`https://proxy-server-jet-omega.vercel.app/pages/api/delete?domain=${domain}&type=${type}&values=${value}`, {
-            method: 'DELETE',
-        });
-
-        if (response.ok) {
-            console.log('DNS record deleted successfully');
-            // Refetch DNS records after deletion
-            fetchDNSRecords();
-        } else {
-            console.error('Failed to delete DNS record');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
-
-  useEffect(() => {
-    fetchDNSRecords();
-  }, [handleDeleteRecord]);
 
   const fetchDNSRecords = async () => {
     try {
@@ -42,7 +19,27 @@ const DNSRecordTable = () => {
     }
   };
 
-  
+  const handleDeleteRecord = async (domain, type, value) => {
+    try {
+        const response = await fetch(`https://proxy-server-jet-omega.vercel.app/pages/api/delete?domain=${domain}&type=${type}&values=${value}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            console.log('DNS record deleted successfully');
+            // Fetch DNS records again after deletion
+            fetchDNSRecords();
+        } else {
+            console.error('Failed to delete DNS record');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDNSRecords();
+  }, []);
 
   return (
     <table>
@@ -71,4 +68,3 @@ const DNSRecordTable = () => {
 };
 
 export default DNSRecordTable;
-//dnsrecordtable
