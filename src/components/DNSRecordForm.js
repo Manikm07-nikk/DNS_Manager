@@ -18,7 +18,7 @@ const DNSRecordForm = ({ onSubmit }) => {
 
     try {
       
-      const response = await fetch('http://52.66.71.14:8080/api/dns/create', {
+      const response = await fetch('https://proxy-server-jet-omega.vercel.app/pages/api/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
