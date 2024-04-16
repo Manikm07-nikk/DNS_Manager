@@ -13,6 +13,7 @@ const DNSRecordTable = () => {
 
   const fetchDNSRecords = async () => {
     try {
+      const response = await fetch('http://52.66.71.14:8080/api/dns');
       if (response.ok) {
         const data = await response.json();
         setDNSRecords(data);
