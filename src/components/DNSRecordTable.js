@@ -13,7 +13,7 @@ const DNSRecordTable = () => {
 
   const fetchDNSRecords = async () => {
     try {
-      const response = await fetch('https://dns-backend.vercel.app:3000/api/dns');
+      const response = await fetch('https://dns-backend.vercel.app/api/dns');
       if (response.ok) {
         const data = await response.json();
         setDNSRecords(data);
