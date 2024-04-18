@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './DNSRecordTable.css'; 
 
 const DNSRecordTable = () => {
-
   const [dnsRecords, setDNSRecords] = useState([]);
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [editedRecord, setEditedRecord] = useState({
+    domain: '',
+    type: '',
+    value: ''
+  });
 
   const fetchDNSRecords = async () => {
     try {
@@ -19,21 +24,63 @@ const DNSRecordTable = () => {
     }
   };
 
+  const handleEditRecord = (record) => {
+    setEditingRecord(record);
+    setEditedRecord({
+      domain: record.domain,
+      type: record.type,
+      value: record.value
+    });
+  };
+
   const handleDeleteRecord = async (domain, type, value) => {
     try {
-        const response = await fetch(`https://proxy-server-jet-omega.vercel.app/pages/api/delete?domain=${domain}&type=${type}&values=${value}`, {
-            method: 'DELETE',
-        });
+      let newValue = value.replace(/,/g, '');
+      console.log(value);
+      const response = await fetch(`https://proxy-server-jet-omega.vercel.app/pages/api/delete?domain=${domain}&type=${type}&values=${value}`, {
+      //const response = await fetch(`http://localhost:8080/api/dns/delete/${domain}?type=${type}&values=${value}`, { // Update the URL to your backend route (`/api/dns/delete/:domain)  
+      //const response = await fetch(`http://localhost:3000/api/dns/delete/${domain}?type=${type}&values=${value}`, {
+      method: 'DELETE',
+      });
 
-        if (response.ok) {
-            console.log('DNS record deleted successfully');
-            // Fetch DNS records again after deletion
-            fetchDNSRecords();
-        } else {
-            console.error('Failed to delete DNS record');
-        }
+      if (response.ok) {
+        console.log('DNS record deleted successfully');
+        fetchDNSRecords();
+      } else {
+        console.error('Failed to delete DNS record');
+      }
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error:', error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedRecord(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleUpdateRecord = async () => {
+    try {
+      const response = await fetch(`https://proxy-server-jet-omega.vercel.app/pages/api/update?domain=${editedRecord.domain}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editedRecord)
+      });
+
+      if (response.ok) {
+        console.log('DNS record updated successfully');
+        fetchDNSRecords();
+        setEditingRecord(null);
+      } else {
+        console.error('Failed to update DNS record');
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
@@ -42,28 +89,40 @@ const DNSRecordTable = () => {
   }, []);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Domain</th>
-          <th>DNS Record Type</th>
-          <th>Value</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {dnsRecords.map(record => (
-          <tr key={record.id}>
-            <td>{record.domain}</td>
-            <td>{record.type}</td>
-            <td>{record.value}</td>
-            <td>
-              <button onClick={() => handleDeleteRecord(record.domain, record.type, record.value)}>Delete</button>
-            </td>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th>DNS Record Type</th>
+            <th>Value</th>
+            <th>Actions</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {dnsRecords.map(record => (
+            <tr key={record.id}>
+              <td>{editingRecord === record ? <input type="text" name="domain" value={editedRecord.domain} onChange={handleInputChange} /> : record.domain}</td>
+              <td>{editingRecord === record ? <input type="text" name="type" value={editedRecord.type} onChange={handleInputChange} /> : record.type}</td>
+              <td>{editingRecord === record ? <input type="text" name="value" value={editedRecord.value} onChange={handleInputChange} /> : record.value}</td>
+              <td>
+                {editingRecord === record ? (
+                  <>
+                    <button onClick={handleUpdateRecord}>Save</button>
+                    <button onClick={() => setEditingRecord(null)}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => handleEditRecord(record)}>Edit</button>
+                    <button onClick={() => handleDeleteRecord(record.domain, record.type, record.value)}>Delete</button>
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
