@@ -10,14 +10,16 @@
 
 :root {
   --bg-color: #ffffff;
-  --text-color: #f60606;
+  --text-color: #000000;
   --second-color: #a09dab;
   --main-color: #000000;
   /* --big-font: 3rem; */
 }
 
 body {
-  background-image: url('111.jpg');
+  /* background-image: url('111.jpg'); */
+  background-color: #8395f6;
+  font-weight: 500;
   background-size: cover;
   /* background-color: var(--bg-color); */
   background-repeat: no-repeat;

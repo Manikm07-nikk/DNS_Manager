@@ -108,13 +108,13 @@ const DNSRecordTable = () => {
               <td>
                 {editingRecord === record ? (
                   <>
-                    <button onClick={handleUpdateRecord}>Save</button>
-                    <button onClick={() => setEditingRecord(null)}>Cancel</button>
+                    <button className="editButton"  onClick={handleUpdateRecord}>Save</button>
+                    <button className="deleteButton" onClick={() => setEditingRecord(null)}>Cancel</button>
                   </>
                 ) : (
                   <>
-                    <button onClick={() => handleEditRecord(record)}>Edit</button>
-                    <button onClick={() => handleDeleteRecord(record.domain, record.type, record.value)}>Delete</button>
+                    <button className="editButton"  onClick={() => handleEditRecord(record)}>Edit</button>
+                    <button className="deleteButton" onClick={() => handleDeleteRecord(record.domain, record.type, record.value)}>Delete</button>
                   </>
                 )}
               </td>

@@ -19,8 +19,9 @@ const Dashboard = () => {
       <div className="upload-container">
         <Upload onUpload={handleAddRecord} />
       </div>
-      <DNSRecordTable key={key} /> {/* Pass key prop to trigger re-render */}
       <DNSRecordForm onAddRecord={handleAddRecord} />
+      <DNSRecordTable key={key} /> {/* Pass key prop to trigger re-render */}
+      
     </div>
   );
 };

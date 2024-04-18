@@ -20,6 +20,11 @@ table {
   margin-top: 30px;
 }
 
+th{
+  font-weight: 600;
+  
+}
+
 th, td {
   border: 1px solid var(--second-color);
   padding: 20px;
@@ -32,6 +37,18 @@ th {
   color: white;
 }
 
+.deleteButton{
+  margin-top:4px;
+  padding:5px;
+  border-radius:7px;
+  cursor: pointer;
+}
+
+.editButton{
+  border-radius:7px;
+  padding:5px;
+  cursor: pointer;
+}
 /* tr:hover {
   background-color: var(--second-color);
 } */
